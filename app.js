@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const { inherits } = require('util');
 const db = require('./db/connection');
 
 db.connect(err => {
@@ -7,7 +8,7 @@ db.connect(err => {
 });
 
 // start up prompt
-const int = () => {
+const init = () => {
     inquirer.prompt([
         {
             type: 'list',
@@ -30,6 +31,19 @@ const int = () => {
             ],
         }
     ])
+    .then(data => {
+        console.log(data)
+        switch(data.routeOption){
+            case 'View all departments.':
+                console.log('VAD switch is working');
+                init()
+                break;
+            case 'View all roles.':
+                console.log('VAR switch is working');
+            default:
+                console.log('everything else');
+        };       
+    })
 }
 
-int();
+init();
