@@ -1,10 +1,12 @@
 const inquirer = require('inquirer');
-const { inherits } = require('util');
 const db = require('./db/connection');
+const viewDepartments = require('./routes/departments');
+const viewRoles = require('./routes/roles');
+const viewEmployees = require('./routes/employee')
+
 
 db.connect(err => {
     if(err) throw err;
-    console.log('Database connected.');
 });
 
 // start up prompt
@@ -32,18 +34,25 @@ const init = () => {
         }
     ])
     .then(data => {
-        console.log(data)
         switch(data.routeOption){
             case 'View all departments.':
-                console.log('VAD switch is working');
-                init()
+                viewDepartments();
                 break;
             case 'View all roles.':
-                console.log('VAR switch is working');
+                viewRoles()
+                break;
+            case 'View all employees.':
+                viewEmployees()
+                break;
             default:
                 console.log('everything else');
         };       
     })
 }
+
+
+
+
+
 
 init();
