@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const db = require('./db/connection');
 const viewDepartments = require('./routes/departments');
 const viewRoles = require('./routes/roles');
-const viewEmployees = require('./routes/employee')
+const { viewEmployees, viewEmployeesByManager} = require('./routes/employee')
 
 
 db.connect(err => {
@@ -20,7 +20,7 @@ const init = () => {
                 'View all departments.',
                 'View all roles.',
                 'View all employees.',
-                '**View employees by manager.**',
+                'View employees by manager.',
                 '**View employees by department',
                 'Add a department.',
                 'Add a role.',
@@ -36,7 +36,8 @@ const init = () => {
     .then(data => {
         switch(data.routeOption){
             case 'View all departments.':
-                viewDepartments();
+                console.table(viewDepartments());
+                init();
                 break;
             case 'View all roles.':
                 viewRoles()
@@ -44,10 +45,14 @@ const init = () => {
             case 'View all employees.':
                 viewEmployees()
                 break;
+            case 'View employees by manager.':
+                viewEmployeesByManager()
+                break;
             default:
                 console.log('everything else');
-        };       
+        };   
     })
+
 }
 
 

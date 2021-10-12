@@ -1,7 +1,7 @@
 const db = require('../db/connection');
 
 const viewRoles = () => {
-    db.query(`SELECT title FROM role`, (err, results) => {
+    db.query(`SELECT title AS Roles FROM role`, (err, results) => {
         if(err) {
             console.log(`error: ${ err.message}`);
             return;

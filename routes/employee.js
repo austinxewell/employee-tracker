@@ -1,7 +1,9 @@
 const db = require('../db/connection');
 
 const viewEmployees = () => {
-    db.query(`SELECT first_name, last_name FROM employee`, (err, results) => {
+    const sql = `SELECT * FROM employee LEFT JOIN role ON employee.manager_id = role.id LEFT JOIN department ON role.department_id ORDER BY employee.id`
+    
+    db.query(sql, (err, results) => {
         if(err) {
             console.log(`error: ${ err.message}`);
             return;
@@ -10,4 +12,14 @@ const viewEmployees = () => {
     });
 };
 
-module.exports = viewEmployees;
+const viewEmployeesByManager = () => {
+    db.query(`SELECT first_name, last_name, manager_id  FROM employee ORDER BY manager_id`, (err, results) => {
+        if(err) {
+            console.log(`error: ${ err.message}`);
+            return;
+        }
+        return console.table(results);
+    });
+};
+
+module.exports = { viewEmployees, viewEmployeesByManager };
