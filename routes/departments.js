@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const db = require('../db/connection');
 
 //experimenting with another way to run the function left in code intentionally.
+// Views all departments in DB
 async function viewDepartments() {
     const sql = `SELECT * FROM department`
 
@@ -18,7 +19,7 @@ async function viewDepartments() {
     return await newPromise
 };
 
-
+// Adds a department to the DB
 const addDepartment = (init) => {
     inquirer.prompt([
         {
@@ -47,7 +48,5 @@ const addDepartment = (init) => {
         );
     });
 };
-
-
 
 module.exports = { viewDepartments, addDepartment }

@@ -19,7 +19,7 @@ const viewRoles = (init) => {
     })
 };
 
-// Adding a Role Function
+// Adding a Role to DB
 const addRole = (init) => {
     inquirer.prompt([
         {
@@ -75,5 +75,46 @@ const addRole = (init) => {
     });
 };
 
+// Updates employee's role in DB STILL NEEDS TO BE FIXED
+const updateEmployeeRole = (init) => {
+   inquirer.prompt([
+            {
+                name: "name",
+                type: "list",
+                message: "Which employee would you like to update?",
+                choices: function () {
+                    let employees = results.map((employee) => ({
+                        name: employee.first_name + " " + employee.last_name,
+                        value: employee.id,
+                    }));
+                    return employees;
+                },
+            },
+            {
+                name: "newrole",
+                type: "list",
+                message: "What is the employee's new role ID?",
+                choices: function () {
+                    let roles = results.map((role) => ({
+                        name: role.title,
+                        value: role.id,
+                    }));
+                    return roles;
 
-module.exports = { viewRoles, addRole }
+                },
+            },
+        ])
+        .then((answer) => {
+            db.query(
+                "UPDATE employee SET employee.role_id = ? WHERE employee.id = ?",
+                [answer.newrole, answer.name],
+                (err) => {
+                    if (err) throw err;
+                    console.log(`Employee's role has been updated successfully! View employees to verify.`);
+                    init();
+                }
+            );
+        });
+}
+
+module.exports = { viewRoles, addRole, updateEmployeeRole }

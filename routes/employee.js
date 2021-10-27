@@ -1,6 +1,7 @@
 const db = require('../db/connection');
 const inquirer = require('inquirer')
 
+// View all employee data
 const viewEmployees = (init) => {
     const sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title AS title, department.department_name AS department, role.salary AS salary, CONCAT(mngr.first_name, ' ', mngr.last_name, ' ') AS manager
     FROM employee
@@ -23,6 +24,7 @@ const viewEmployees = (init) => {
     })
 };
 
+// Adds an employee to DB
 const addEmployee = (init) => {
     inquirer.prompt([
         {

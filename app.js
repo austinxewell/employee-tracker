@@ -1,10 +1,8 @@
 const inquirer = require('inquirer');
 const db = require('./db/connection');
 const { addDepartment, viewDepartments } = require('./routes/departments');
-const { viewRoles, addRole} = require('./routes/roles');
+const { viewRoles, addRole, updateEmployeeRole} = require('./routes/roles');
 const { viewEmployees, addEmployee} = require('./routes/employee');
-
-
 
 db.connect(err => {
     if(err) throw err;
@@ -25,6 +23,7 @@ const init = () => {
                 'Add a role.',
                 'Add an Employee.',
                 'Update an Employee role',
+                'Exit'
             ],
         }
     ])
@@ -51,16 +50,14 @@ const init = () => {
             case 'Add an Employee.':
                 addEmployee(init)
                 break;
+            case 'Update an Employee role':
+                updateEmployeeRole(init)
+                break;
+            case 'Exit':
             default:
-                console.log('everything else');
+                console.log('Goodbye!');
         };   
     })
-
 }
-
-
-
-
-
 
 init();
