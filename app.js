@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const db = require('./db/connection');
 const { addDepartment, viewDepartments } = require('./routes/departments');
-const viewRoles = require('./routes/roles');
+const { viewRoles, addRole} = require('./routes/roles');
 const { viewEmployees, viewEmployeesByManager} = require('./routes/employee');
 
 
@@ -48,6 +48,9 @@ const init = () => {
                 break;
             case 'Add a department.':
                 addDepartment(init)
+                break;
+            case 'Add a role.':
+                addRole(init)
                 break;
             default:
                 console.log('everything else');
