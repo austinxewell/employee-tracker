@@ -1,6 +1,6 @@
 const db = require('../db/connection');
 
-const viewEmployees = () => {
+const viewEmployees = (init) => {
     const sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title AS title, department.department_name AS department, role.salary AS salary, CONCAT(mngr.first_name, ' ', mngr.last_name, ' ') AS manager
     FROM employee
     JOIN role
@@ -11,13 +11,15 @@ const viewEmployees = () => {
     ON employee.manager_id = mngr.id
     ORDER BY employee.id`
     
-    db.query(sql, (err, results) => {
+    db.promise().query(sql).then(results => {
+        console.table(results[0]);
+        init()
+    }).catch(err => {
         if(err) {
             console.log(`error: ${ err.message}`);
             return;
         }
-        return console.table(results);
-    });
+    })
 };
 
 const viewEmployeesByManager = () => {

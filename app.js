@@ -22,15 +22,10 @@ const init = () => {
                 'View all roles.',
                 'View all employees.',
                 'View employees by manager.',
-                '**View employees by department',
                 'Add a department.',
                 'Add a role.',
                 'Add an Employee.',
-                '**Delete a department**',
-                '**Delete a role.**',
-                '**Delete an employee**',
                 'Update an Employee Role',
-                '**Update employee managers.**'
             ],
         }
     ])
@@ -46,13 +41,13 @@ const init = () => {
                 viewRoles(init)
                 break;
             case 'View all employees.':
-                viewEmployees()
+                viewEmployees(init)
                 break;
             case 'View employees by manager.':
                 viewEmployeesByManager()
                 break;
             case 'Add a department.':
-                addDepartment()
+                addDepartment(init)
                 break;
             default:
                 console.log('everything else');
