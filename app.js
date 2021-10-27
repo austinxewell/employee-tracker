@@ -1,8 +1,9 @@
 const inquirer = require('inquirer');
 const db = require('./db/connection');
-const viewDepartments = require('./routes/departments');
+const { addDepartment, viewDepartments } = require('./routes/departments');
 const viewRoles = require('./routes/roles');
-const { viewEmployees, viewEmployeesByManager} = require('./routes/employee')
+const { viewEmployees, viewEmployeesByManager} = require('./routes/employee');
+
 
 
 db.connect(err => {
@@ -36,17 +37,22 @@ const init = () => {
     .then(data => {
         switch(data.routeOption){
             case 'View all departments.':
-                console.table(viewDepartments());
-                init();
+                viewDepartments().then(data => {
+                    console.table(data)
+                    init();
+                    });
                 break;
             case 'View all roles.':
-                viewRoles()
+                viewRoles(init)
                 break;
             case 'View all employees.':
                 viewEmployees()
                 break;
             case 'View employees by manager.':
                 viewEmployeesByManager()
+                break;
+            case 'Add a department.':
+                addDepartment()
                 break;
             default:
                 console.log('everything else');

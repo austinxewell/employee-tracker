@@ -1,23 +1,33 @@
+const inquirer = require('inquirer');
 const db = require('../db/connection');
 
 async function viewDepartments() {
+    const sql = `SELECT * FROM department`
+
     let newPromise = new Promise((resolve, reject) => {
-    try {
-        db.query(`SELECT * FROM department`, (err, results) => {
+    
+        db.query(sql, (err, results) => {
             if(err) {
-                console.log(`error: ${ err.message }`);
+                reject(err)
                 return;
             } 
             resolve(results);
-            // console.table(results);
         });
-    } catch (err) { 
-        reject(err)
-    }
     });
-    await newPromise
+    return await newPromise
+};
+
+
+const addDepartment = () => {
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What department would you like to add?',
+        },
+    ]).then(data => console.log(data))
 };
 
 
 
-module.exports = viewDepartments;
+module.exports = { viewDepartments, addDepartment }

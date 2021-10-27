@@ -1,7 +1,15 @@
 const db = require('../db/connection');
 
 const viewEmployees = () => {
-    const sql = `SELECT * FROM employee LEFT JOIN role ON employee.manager_id = role.id LEFT JOIN department ON role.department_id = department.id ORDER BY employee.id`
+    const sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title AS title, department.department_name AS department, role.salary AS salary, CONCAT(mngr.first_name, ' ', mngr.last_name, ' ') AS manager
+    FROM employee
+    JOIN role
+    ON employee.role_id = role.id
+    JOIN department
+    ON role.department_id = department.id
+    LEFT JOIN employee AS mngr
+    ON employee.manager_id = mngr.id
+    ORDER BY employee.id`
     
     db.query(sql, (err, results) => {
         if(err) {
@@ -13,6 +21,17 @@ const viewEmployees = () => {
 };
 
 const viewEmployeesByManager = () => {
+    // const sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title AS title, department.department_name AS department, role.salary AS salary, CONCAT(mngr.first_name, ' ', mngr.last_name, ' ') AS manager
+    // FROM employee
+    // JOIN role
+    // ON employee.role_id =  role.id
+    // JOIN department
+    // ON role.department_id = department.id
+    // LEFT JOIN employee AS mngr
+    // ON employee.manager_id = mngr.id
+    // WHERE mngr.id = ?
+    // ORDER BY e.id`
+
     db.query(`SELECT first_name, last_name, manager_id  FROM employee ORDER BY manager_id`, (err, results) => {
         if(err) {
             console.log(`error: ${ err.message}`);
