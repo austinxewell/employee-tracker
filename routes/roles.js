@@ -1,6 +1,7 @@
 const db = require('../db/connection');
 const inquirer = require('inquirer');
 
+// View all the roles
 const viewRoles = (init) => {
     const sql = `SELECT role.id, role.title, role.salary, department.department_name AS department_name
     FROM role
@@ -18,7 +19,7 @@ const viewRoles = (init) => {
     })
 };
 
-
+// Adding a Role Function
 const addRole = (init) => {
     inquirer.prompt([
         {

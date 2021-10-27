@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const db = require('./db/connection');
 const { addDepartment, viewDepartments } = require('./routes/departments');
 const { viewRoles, addRole} = require('./routes/roles');
-const { viewEmployees, viewEmployeesByManager} = require('./routes/employee');
+const { viewEmployees, addEmployee} = require('./routes/employee');
 
 
 
@@ -20,12 +20,11 @@ const init = () => {
             choices: [
                 'View all departments.',
                 'View all roles.',
-                'View all employees.',
-                'View employees by manager.',
+                'View all Employees.',
                 'Add a department.',
                 'Add a role.',
                 'Add an Employee.',
-                'Update an Employee Role',
+                'Update an Employee role',
             ],
         }
     ])
@@ -40,17 +39,17 @@ const init = () => {
             case 'View all roles.':
                 viewRoles(init)
                 break;
-            case 'View all employees.':
+            case 'View all Employees.':
                 viewEmployees(init)
-                break;
-            case 'View employees by manager.':
-                viewEmployeesByManager()
                 break;
             case 'Add a department.':
                 addDepartment(init)
                 break;
             case 'Add a role.':
                 addRole(init)
+                break;
+            case 'Add an Employee.':
+                addEmployee(init)
                 break;
             default:
                 console.log('everything else');
