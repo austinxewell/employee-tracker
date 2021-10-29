@@ -75,32 +75,57 @@ const addRole = (init) => {
     });
 };
 
-// Updates employee's role in DB STILL NEEDS TO BE FIXED
-const updateEmployeeRole = (init) => {
-   inquirer.prompt([
-            {
-                name: "name",
-                type: "list",
-                message: "Which employee would you like to update?",
-                choices: function () {
-                    let employees = results.map((employee) => ({
-                        name: employee.first_name + " " + employee.last_name,
-                        value: employee.id,
-                    }));
-                    return employees;
-                },
+
+// Updates employee's role in DB
+const updateEmployeeRole = async(init) => {
+
+    const sqlEmployee = `SELECT employee.id, employee.first_name, employee.last_name, role.title AS title, department.department_name AS department, role.salary AS salary, CONCAT(mngr.first_name, ' ', mngr.last_name, ' ') AS manager
+    FROM employee
+    JOIN role
+    ON employee.role_id = role.id
+    JOIN department
+    ON role.department_id = department.id
+    LEFT JOIN employee AS mngr
+    ON employee.manager_id = mngr.id
+    ORDER BY employee.id`
+
+
+    const sqlRoles = `SELECT role.id, role.title, role.salary, department.department_name AS department_name
+    FROM role
+    JOIN department 
+    ON role.department_id =  department.id;`
+
+    const resultsEmployee = await db.promise().query(sqlEmployee).then(results => {
+        return (results[0])
+    })
+
+    const resultsRoles = await db.promise().query(sqlRoles).then(results => {
+        return (results[0])
+
+    })
+    inquirer.prompt([
+        {
+            name: "name",
+            type: "list",
+            message: "Which employee would you like to update?",
+            choices:
+            function () {
+                return resultsEmployee.map((employee) => ({
+                    name: employee.first_name + " " + employee.last_name,
+                    value: employee.id,
+                }));
             },
+        },
             {
                 name: "newrole",
                 type: "list",
                 message: "What is the employee's new role ID?",
-                choices: function () {
-                    let roles = results.map((role) => ({
+                choices:
+                function () {
+                    return resultsRoles.map((role) => ({
                         name: role.title,
                         value: role.id,
                     }));
-                    return roles;
-
                 },
             },
         ])

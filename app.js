@@ -51,6 +51,9 @@ const init = () => {
                 addEmployee(init)
                 break;
             case 'Update an Employee role':
+// let employeeChoices = results.map({employee})
+// console.log(employeeChoices)
+
                 updateEmployeeRole(init)
                 break;
             case 'Exit':
